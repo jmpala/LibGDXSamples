@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.jmpalazzolo.libgdxsamples.Constants;
 import io.jmpalazzolo.libgdxsamples.MyGame;
 
+/**
+ * This system draws the debug boundaries of the elements on the screen
+ */
 public class DebugRenderSystem extends BaseSystem {
 
     private ShapeRenderer shapeRenderer;
@@ -35,6 +38,7 @@ public class DebugRenderSystem extends BaseSystem {
         drawGrid();
         drawCenter();
         drawMapTopAndRightLimits();
+        drawOrigin();
         shapeRenderer.end();
     }
 

@@ -4,11 +4,20 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
-import com.sun.org.apache.bcel.internal.Const;
 import io.jmpalazzolo.libgdxsamples.Components.Position;
 import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.Constants;
 
+/**
+ * This system process entities with
+ * {@link Position} and {@link MovementDirection}
+ * components
+ *
+ * It gets the {@link Position} and {@link MovementDirection} components
+ * for the current entity.
+ *
+ * With that information, change the X and Y position of the entity.
+ */
 @All({Position.class, MovementDirection.class})
 public class MovementSystem extends IteratingSystem {
 

@@ -1,24 +1,22 @@
 package io.jmpalazzolo.libgdxsamples.systems.input.states;
 
-import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import io.jmpalazzolo.libgdxsamples.Components.movement.Direction;
-import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.systems.input.InputSystem;
 import org.pmw.tinylog.Logger;
 
+/**
+ * InputState: "Walking"
+ *
+ * Implements only:
+ * - stand()
+ *
+ */
 public class WalkingState extends InputState {
 
     private static WalkingState INSTANCE;
-    private InputSystem inputSystem;
 
     private WalkingState(InputSystem inputSystem) {
-        this.inputSystem = inputSystem;
-        isWPressed = false;
-        isDPressed = false;
-        isSPressed = false;
-        isAPressed = false;
+        super(inputSystem);
     }
 
     public static InputState getINSTANCE(InputSystem inputSystem) {
@@ -33,10 +31,7 @@ public class WalkingState extends InputState {
     @Override
     public void stand() {
         InputState inputState = StandingState.getINSTANCE(inputSystem);
-        inputState.isWPressed = isWPressed;
-        inputState.isDPressed = isDPressed;
-        inputState.isSPressed = isSPressed;
-        inputState.isAPressed = isAPressed;
+        inputState.setKeysState(isWPressed, isDPressed, isSPressed, isAPressed);
         inputSystem.setCurrentState(inputState);
     }
 
@@ -53,36 +48,7 @@ public class WalkingState extends InputState {
     @Override
     public boolean keyDown(int keycode) {
 
-        int entity = inputSystem.getEntity();
-        ComponentMapper<MovementDirection> mMovementDirection = inputSystem.getmMovementDirection();
-        MovementDirection movementDir;
-
-        if(Input.Keys.W == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.NORTH;
-            if(isAPressed) movementDir.direction = Direction.NORTH_WEST;
-            if(isDPressed) movementDir.direction = Direction.NORTH_EAST;
-            isWPressed = true;
-        } else if (Input.Keys.S == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.SOUTH;
-            if(isAPressed) movementDir.direction = Direction.SOUTH_WEST;
-            if(isDPressed) movementDir.direction = Direction.SOUTH_EAST;
-            isSPressed = true;
-        }
-        if(Input.Keys.A == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.WEST;
-            if(isWPressed) movementDir.direction = Direction.NORTH_WEST;
-            if(isSPressed) movementDir.direction = Direction.SOUTH_WEST;
-            isAPressed = true;
-        } else if (Input.Keys.D == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.EAST;
-            if(isWPressed) movementDir.direction = Direction.NORTH_EAST;
-            if(isSPressed) movementDir.direction = Direction.SOUTH_EAST;
-            isDPressed = true;
-        }
+        getMovementDirectionOnKeyDown(keycode);
 
         return true;
     }
@@ -90,39 +56,12 @@ public class WalkingState extends InputState {
     @Override
     public boolean keyUp(int keycode) {
 
-        int entity = inputSystem.getEntity();
-        ComponentMapper<MovementDirection> mMovementDirection = inputSystem.getmMovementDirection();
-        MovementDirection movementDir;
+        getMovementDirectionOnKeyUP(keycode);
 
-        if(Input.Keys.W == keycode) {
-            movementDir = mMovementDirection.get(entity);
-            if(isAPressed) movementDir.direction = Direction.WEST;
-            if(isDPressed) movementDir.direction = Direction.EAST;
-            isWPressed = false;
-        } else if (Input.Keys.S == keycode) {
-            movementDir = mMovementDirection.get(entity);
-            if(isAPressed) movementDir.direction = Direction.WEST;
-            if(isDPressed) movementDir.direction = Direction.EAST;
-            isSPressed = false;
-        }
-        if(Input.Keys.A == keycode) {
-            movementDir = mMovementDirection.get(entity);
-            if(isWPressed) movementDir.direction = Direction.NORTH;
-            if(isSPressed) movementDir.direction = Direction.SOUTH;
-            isAPressed = false;
-        } else if (Input.Keys.D == keycode) {
-            movementDir = mMovementDirection.get(entity);
-            if(isWPressed) movementDir.direction = Direction.NORTH;
-            if(isSPressed) movementDir.direction = Direction.SOUTH;
-            isDPressed = false;
-        }
-
-        boolean isMoving = isWPressed || isDPressed || isSPressed || isAPressed;
-
-        if (!isMoving) {
-            mMovementDirection.remove(entity);
+        if (!isMoving()) {
             stand();
         }
+
         return true;
     }
 

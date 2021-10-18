@@ -1,7 +1,5 @@
 package io.jmpalazzolo.libgdxsamples.Components.movement;
 
-import com.artemis.Component;
-
 public enum Direction {
     NORTH((byte)1),
     NORTH_EAST((byte)2),

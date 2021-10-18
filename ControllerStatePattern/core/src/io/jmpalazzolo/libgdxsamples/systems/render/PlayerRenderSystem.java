@@ -8,8 +8,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.jmpalazzolo.libgdxsamples.Components.Playable;
 import io.jmpalazzolo.libgdxsamples.Components.Position;
+import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.MyGame;
 
+/**
+ * This system process entities with
+ * {@link Playable} and {@link Position}
+ * components
+ *
+ * With that information, the system draws the player
+ */
 @All({Playable.class, Position.class})
 public class PlayerRenderSystem extends IteratingSystem {
 

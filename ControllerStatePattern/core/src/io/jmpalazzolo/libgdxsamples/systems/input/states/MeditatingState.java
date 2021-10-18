@@ -5,13 +5,19 @@ import com.badlogic.gdx.Input;
 import io.jmpalazzolo.libgdxsamples.systems.input.InputSystem;
 import org.pmw.tinylog.Logger;
 
+/**
+ * InputState: "Meditating"
+ *
+ * Implements only:
+ * - stand()
+ *
+ */
 public class MeditatingState extends InputState {
 
     private static MeditatingState INSTANCE;
-    private InputSystem inputSystem;
 
     private MeditatingState(InputSystem inputSystem) {
-        this.inputSystem = inputSystem;
+        super(inputSystem);
     }
 
     public static InputState getINSTANCE(InputSystem inputSystem) {
@@ -25,7 +31,9 @@ public class MeditatingState extends InputState {
 
     @Override
     public void stand() {
-        inputSystem.setCurrentState(StandingState.getINSTANCE(inputSystem));
+        InputState inputState = StandingState.getINSTANCE(inputSystem);
+        inputState.setKeysState(isWPressed, isDPressed, isSPressed, isAPressed);
+        inputSystem.setCurrentState(inputState);
     }
 
     @Override

@@ -9,13 +9,29 @@ import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.systems.input.states.InputState;
 import io.jmpalazzolo.libgdxsamples.systems.input.states.StandingState;
 
+/**
+ * This system process entities with
+ * {@link Playable} and {@link Position}
+ * components
+ *
+ * Captures the input and segregates the behavior in swappable classes.
+ *
+ * Please see the gang of four "state pattern"
+ * - context: this system
+ * - state: {@link io.jmpalazzolo.libgdxsamples.systems.input.states.InputState}
+ *
+ * Possible states:
+ * - {@link io.jmpalazzolo.libgdxsamples.systems.input.states.StandingState}
+ * - {@link io.jmpalazzolo.libgdxsamples.systems.input.states.WalkingState}
+ * - {@link io.jmpalazzolo.libgdxsamples.systems.input.states.MeditatingState}
+ *
+ */
 @All({Playable.class, Position.class})
 public class InputSystem extends IteratingSystem {
 
     private ComponentMapper<MovementDirection> mMovementDirection;
 
     private InputState currentState;
-    private MovementDirection direction;
     private int entity;
 
     public InputSystem() {
@@ -24,7 +40,6 @@ public class InputSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        direction = mMovementDirection.get(entityId);
         entity = entityId;
     }
 
@@ -34,10 +49,6 @@ public class InputSystem extends IteratingSystem {
 
     public ComponentMapper<MovementDirection> getmMovementDirection() {
         return mMovementDirection;
-    }
-
-    public MovementDirection getPlayablePosition() {
-        return direction;
     }
 
     public int getEntity() {

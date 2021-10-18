@@ -1,6 +1,5 @@
 package io.jmpalazzolo.libgdxsamples;
 
-import com.artemis.ComponentMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
@@ -16,11 +15,8 @@ import io.jmpalazzolo.libgdxsamples.systems.input.InputSystem;
 import io.jmpalazzolo.libgdxsamples.systems.render.DebugRenderSystem;
 import io.jmpalazzolo.libgdxsamples.systems.render.PlayerRenderSystem;
 import io.jmpalazzolo.libgdxsamples.utils.GdxUtils;
-import org.graalvm.compiler.lir.aarch64.AArch64Move;
 
 public class MyGame extends ApplicationAdapter {
-
-
 
 	private ShapeRenderer renderer;
 

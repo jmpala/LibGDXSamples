@@ -1,24 +1,23 @@
 package io.jmpalazzolo.libgdxsamples.systems.input.states;
 
-import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import io.jmpalazzolo.libgdxsamples.Components.movement.Direction;
-import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.systems.input.InputSystem;
 import org.pmw.tinylog.Logger;
 
+/**
+ * InputState: "Standing"
+ *
+ * Implements only:
+ * - walk()
+ * - meditate()
+ */
 public class StandingState extends InputState {
 
     private static StandingState INSTANCE;
-    private InputSystem inputSystem;
 
     private StandingState(InputSystem inputSystem) {
-        this.inputSystem = inputSystem;
-        isWPressed = false;
-        isDPressed = false;
-        isSPressed = false;
-        isAPressed = false;
+        super(inputSystem);
     }
 
     public static InputState getINSTANCE(InputSystem inputSystem) {
@@ -38,56 +37,24 @@ public class StandingState extends InputState {
     @Override
     public void walk() {
         InputState inputState = WalkingState.getINSTANCE(inputSystem);
-        inputState.isWPressed = isWPressed;
-        inputState.isDPressed = isDPressed;
-        inputState.isSPressed = isSPressed;
-        inputState.isAPressed = isAPressed;
+        inputState.setKeysState(isWPressed, isDPressed, isSPressed, isAPressed);
         inputSystem.setCurrentState(inputState);
     }
 
     @Override
     public void meditate() {
-        inputSystem.setCurrentState(MeditatingState.getINSTANCE(inputSystem));
+        InputState inputState  = MeditatingState.getINSTANCE(inputSystem);
+        inputState.setKeysState(isWPressed, isDPressed, isSPressed, isAPressed);
+        inputSystem.setCurrentState(inputState);
     }
 
 
     @Override
     public boolean keyDown(int keycode) {
 
-        int entity = inputSystem.getEntity();
-        ComponentMapper<MovementDirection> mMovementDirection = inputSystem.getmMovementDirection();
-        MovementDirection movementDir;
+        getMovementDirectionOnKeyDown(keycode);
 
-        if(Input.Keys.W == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.NORTH;
-            if(isAPressed) movementDir.direction = Direction.NORTH_WEST;
-            if(isDPressed) movementDir.direction = Direction.NORTH_EAST;
-            isWPressed = true;
-        } else if (Input.Keys.S == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.SOUTH;
-            if(isAPressed) movementDir.direction = Direction.SOUTH_WEST;
-            if(isDPressed) movementDir.direction = Direction.SOUTH_EAST;
-            isSPressed = true;
-        }
-        if(Input.Keys.A == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.WEST;
-            if(isWPressed) movementDir.direction = Direction.NORTH_WEST;
-            if(isSPressed) movementDir.direction = Direction.SOUTH_WEST;
-            isAPressed = true;
-        } else if (Input.Keys.D == keycode) {
-            movementDir = mMovementDirection.create(entity);
-            movementDir.direction = Direction.EAST;
-            if(isWPressed) movementDir.direction = Direction.NORTH_EAST;
-            if(isSPressed) movementDir.direction = Direction.SOUTH_EAST;
-            isDPressed = true;
-        }
-
-        boolean isMoving = isWPressed || isDPressed || isSPressed || isAPressed;
-
-        if(isMoving) {
+        if(isMoving()) {
             walk();
         } else if (Input.Keys.M == keycode) {
             meditate();
