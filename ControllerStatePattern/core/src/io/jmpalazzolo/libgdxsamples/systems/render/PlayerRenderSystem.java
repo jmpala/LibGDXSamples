@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.jmpalazzolo.libgdxsamples.Components.Playable;
 import io.jmpalazzolo.libgdxsamples.Components.Position;
-import io.jmpalazzolo.libgdxsamples.Components.movement.MovementDirection;
 import io.jmpalazzolo.libgdxsamples.MyGame;
 
 /**
